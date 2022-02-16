@@ -6,6 +6,7 @@ import './style.scss';
 const TradingWidget = (props) => {
     props.bids.sort((a, b) => a.total - b.total);
     props.asks.sort((a, b) => a.total - b.total);
+
     return <div className="tradeWidget">
         <div className="bidsGrid">
             <GridHeader headerConfig={Bids_Grid_Header_Config} />

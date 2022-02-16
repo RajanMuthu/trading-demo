@@ -5,7 +5,7 @@ const GridRow = React.memo((props) => {
 
     return <div className='gridRow'>
         {props.headerConfig.map(header => {
-            return <div className='column' key={props.rowData[header.price]}>{props.rowData[header.columnId]}</div>;
+            return <div className='column' key={header.columnId}>{props.rowData[header.columnId]}</div>;
         })}
 </div>
 });

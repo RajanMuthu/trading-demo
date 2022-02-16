@@ -1,3 +1,5 @@
+import { ACTION_DELETE, ACTION_UPSERT } from "./Constants";
+
 const getBidsAndAsks = (trades) => {
     const bids = [];
     const asks = [];
@@ -5,14 +7,23 @@ const getBidsAndAsks = (trades) => {
         if (trade[2] > 0) { // if amount is less than 0
             bids.push({ price: trade[0], count: trade[1], amount: trade[2], total: trade[1] * trade[2] });
         } else if (trade[2] < 0) {// if amount is greater than 0
-            asks.push({ price: trade[0], count: trade[1], amount: trade[2] * -1, total: trade[1] * trade[2] * -1 });
+            asks.push({ price: trade[0], count: trade[1], amount: trade[2], total: trade[1] * trade[2] });
         }
     }
     return { bids, asks };
 }
 
-const updateTrade = (trade) => {
-    
+const getTradeUpdate = (updatedTrade) => {
+    const trade = {}
+
+    if(updatedTrade && updatedTrade.length >= 2) {
+        trade.price = updatedTrade[0];
+        trade.count = updatedTrade[1];
+        trade.amount = updatedTrade[2];
+        trade.total = updatedTrade[1] * updatedTrade[2];
+    }
+
+    return trade;
 }
 
 export const initializeWebsocket = (props) => {
@@ -24,9 +35,9 @@ export const initializeWebsocket = (props) => {
     // Connection opened
     socket.addEventListener('open', event => {
         socket.send(JSON.stringify({ event: "subscribe", channel: 'book', symbol: "tBTCUSD" }));
-        setTimeout(() => {
-            socket.close();
-        }, 5000);
+        // setTimeout(() => {
+        //     socket.close();
+        // }, 5000);
     });
 
     // Listen for messages
@@ -41,7 +52,20 @@ export const initializeWebsocket = (props) => {
                 props.setBidsSnapshot(bidsAndAsks.bids);
                 props.setAsksSnapshot(bidsAndAsks.asks);
             } else if(isSnapshot && response.length >= 2 && Array.isArray(response[1])) { // updates
-                // to do
+                const updatedTrade = getTradeUpdate(response[1]);
+                if(updatedTrade.count > 0) { // count is greater than zero
+                    if(updatedTrade.amount > 0) { // amount is greater than zero
+                        props.updateBids([{...updatedTrade, actionFlag: ACTION_UPSERT}]);
+                    } else if (updatedTrade.amount < 0) {// amount is less than zero
+                        props.updateAsks([{...updatedTrade, actionFlag: ACTION_UPSERT}]);
+                    }
+                } else if(updatedTrade.count === 0) { // count is zero
+                    if(updatedTrade.amount === 1) { // amount is 1
+                        props.updateBids([{...updatedTrade, actionFlag: ACTION_DELETE}]);
+                    } else if(updatedTrade.amount === -1) { // amount is -1
+                        props.updateAsks([{...updatedTrade, actionFlag: ACTION_DELETE}]);
+                    }
+                }
             }
         }
     });

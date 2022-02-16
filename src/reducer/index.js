@@ -1,9 +1,11 @@
+import _ from "lodash";
 import { combineReducers } from "redux";
-import { ASKS, BIDS, SET_ASKS, SET_BIDS, SET_CHANNEL_ID, UPDATE_ASKS, UPDATE_BIDS } from "../Constants";
+import { ACTION_DELETE, ASKS, BIDS, CHANNEL_ID, SET_ASKS, SET_BIDS, SET_CHANNEL_ID, UPDATE_ASKS, UPDATE_BIDS } from "../Constants";
 import { getLocalStorage, setLocalStorage } from "../utility";
 
-const setChannelId = (state = null, action) => {
+const setChannelId = (state = getLocalStorage(CHANNEL_ID), action) => {
     if (action.type === SET_CHANNEL_ID) {
+        setLocalStorage(CHANNEL_ID, action.payload);
         return action.payload;
     }
     return state;
@@ -14,7 +16,11 @@ const bidsReducer = (state = getLocalStorage(BIDS), action) => {
         setLocalStorage(BIDS, action.payload);
         return action.payload;
     } else if (action.type === UPDATE_BIDS) {
-        return null;
+        const updates = action.payload;
+        const mergedUpdates = _.unionBy(updates, state, 'price');
+        const filteredUpdates = mergedUpdates.filter(trade => trade.actionFlag !== ACTION_DELETE);
+        setLocalStorage(BIDS, filteredUpdates);
+        return filteredUpdates;
     }
     return state;
 }
@@ -24,7 +30,11 @@ const asksReducer = (state = getLocalStorage(ASKS), action) => {
         setLocalStorage(ASKS, action.payload);
         return action.payload;
     } else if (action.type === UPDATE_ASKS) {
-        return null;
+        const updates = action.payload;
+        const mergedUpdates = _.unionBy(updates, state, 'price');
+        const filteredUpdates = mergedUpdates.filter(trade => trade.actionFlag !== ACTION_DELETE);
+        setLocalStorage(ASKS, filteredUpdates);
+        return filteredUpdates;
     }
     return state;
 }
