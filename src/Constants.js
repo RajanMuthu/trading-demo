@@ -10,3 +10,7 @@ export const CHANNEL_ID = 'CHANNEL_ID';
 
 export const ACTION_UPSERT = 'ACTION_UPSERT';
 export const ACTION_DELETE = 'ACTION_DELETE';
+
+export const NUMBER_COLUMN = 'NUMBER_COLUMN';
+export const CURRENCY_COLUMN = 'CURRENCY_COLUMN';
+export const INT_COLUMN = 'INT_COLUMN';

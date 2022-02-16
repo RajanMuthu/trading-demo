@@ -42,7 +42,7 @@ export const initializeWebsocket = (props) => {
 
     // Listen for messages
     socket.addEventListener('message', event => {
-        console.log('Message from server ', event.data);
+        // console.log('Message from server ', event.data);
         const response = JSON.parse(event.data);
         if (response && Array.isArray(response)) {
             if (!isSnapshot && response.length >= 2 && Array.isArray(response[1])) { // snapshot
@@ -53,16 +53,16 @@ export const initializeWebsocket = (props) => {
                 props.setAsksSnapshot(bidsAndAsks.asks);
             } else if(isSnapshot && response.length >= 2 && Array.isArray(response[1])) { // updates
                 const updatedTrade = getTradeUpdate(response[1]);
-                if(updatedTrade.count > 0) { // count is greater than zero
-                    if(updatedTrade.amount > 0) { // amount is greater than zero
+                if(updatedTrade.count > 0) {
+                    if(updatedTrade.amount > 0) {
                         props.updateBids([{...updatedTrade, actionFlag: ACTION_UPSERT}]);
-                    } else if (updatedTrade.amount < 0) {// amount is less than zero
+                    } else if (updatedTrade.amount < 0) {
                         props.updateAsks([{...updatedTrade, actionFlag: ACTION_UPSERT}]);
                     }
-                } else if(updatedTrade.count === 0) { // count is zero
-                    if(updatedTrade.amount === 1) { // amount is 1
+                } else if(updatedTrade.count === 0) {
+                    if(updatedTrade.amount === 1) {
                         props.updateBids([{...updatedTrade, actionFlag: ACTION_DELETE}]);
-                    } else if(updatedTrade.amount === -1) { // amount is -1
+                    } else if(updatedTrade.amount === -1) {
                         props.updateAsks([{...updatedTrade, actionFlag: ACTION_DELETE}]);
                     }
                 }
