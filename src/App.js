@@ -8,7 +8,11 @@ import { initializeWebsocket } from './utility';
 function App(props) {
 
   useEffect(() => {
-    initializeWebsocket(props);
+    const ws = initializeWebsocket(props);
+
+    return () => {
+      ws && ws.close();
+    }
   }, []);
 
   return (

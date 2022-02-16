@@ -1,0 +1,13 @@
+.tradeWidget {
+    width: 100%;
+    height: 100%;
+    display: flex;
+
+    .bidsGrid {
+        width: 50%;
+    }
+
+    .asksGrid {
+        width: 50%;
+    }
+}

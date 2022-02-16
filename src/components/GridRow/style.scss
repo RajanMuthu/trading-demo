@@ -1,0 +1,10 @@
+.gridRow {
+    display: flex;
+    width: 100%;
+    cursor: pointer;
+
+    .column {
+        width: 25%;
+        // text-align: center;
+    }
+}
