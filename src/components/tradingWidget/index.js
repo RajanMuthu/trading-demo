@@ -10,14 +10,14 @@ const TradingWidget = (props) => {
         <div className='wrapper'>
             <div className="bidsGrid">
                 <GridHeader headerConfig={Bids_Grid_Header_Config} />
-                {props.bids.map(bid => {
+                {props.bids && props.bids.map(bid => {
                     return <GridRow rowData={bid} headerConfig={Bids_Grid_Header_Config} key={bid.price} />
                 })}
             </div>
             <hr />
             <div className="asksGrid">
                 <GridHeader headerConfig={Asks_Grid_Header_Config} />
-                {props.asks.map(ask => {
+                {props.asks && props.asks.map(ask => {
                     return <GridRow rowData={ask}
                         headerConfig={Asks_Grid_Header_Config}
                         key={ask.price}/>
