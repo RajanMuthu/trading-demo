@@ -6,7 +6,7 @@ const GridRow = (props) => {
     const [selectionColor, setSelectionColor] = useState(null);
 
     return <div className='gridRow' style={{backgroundColor: selectionColor}}
-        onMouseOver={() => setSelectionColor('blue')} onMouseOut={() => setSelectionColor(null)}>
+        onClick={() => setSelectionColor('blue')}>
         {props.headerConfig.map(header => {
             let cellData = props.rowData[header.columnId];
             if (cellData < 0) {
