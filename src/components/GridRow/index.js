@@ -22,20 +22,8 @@ const GridRow = (props) => {
     </div>
 };
 
-const GridColumn = React.memo((props) => {
-    
-
+const GridColumn = React.memo((props) => {    
     return <div className='column'>{props.cellData}</div>;
 });
-
-// const areEqual = (prevProps, nextProps) => {
-
-//     if (prevProps && nextProps && prevProps.rowData && nextProps.rowData &&
-//         (prevProps.rowData.count !== nextProps.rowData.count || prevProps.rowData.amount !== nextProps.rowData.amount || prevProps.rowData.price !== nextProps.rowData.price)) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
 
 export default React.memo(GridRow);
