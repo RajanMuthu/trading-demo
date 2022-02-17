@@ -34,10 +34,10 @@ export const initializeWebsocket = (props) => {
 
     // Connection opened
     socket.addEventListener('open', event => {
-        socket.send(JSON.stringify({ event: "subscribe", channel: 'book', symbol: "tBTCUSD" }));
+        socket.send(JSON.stringify({ event: "subscribe", channel: 'book', symbol: "tBTCUSD"}));
         // setTimeout(() => {
         //     socket.close();
-        // }, 5000);
+        // }, 4000);
     });
 
     // Listen for messages
@@ -83,4 +83,8 @@ export const setLocalStorage = (key, val) => {
 
 export const getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
+}
+
+export const sort = (arr, sortCompareFunc) => {
+    arr.sort(sortCompareFunc);
 }
