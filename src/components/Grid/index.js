@@ -8,7 +8,7 @@ const Grid = (props) => {
         {props.gridData && props.gridData.map(rowData => {
             return <GridRow rowData={rowData}
                 headerConfig={props.headerConfig}
-                key={props.uniqueId} />
+                key={rowData[props.uniqueId]} />
         })}
     </div>
 }
