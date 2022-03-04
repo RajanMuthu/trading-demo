@@ -1,5 +1,5 @@
 import { connect } from "react-redux"
-import TradingWidget from "../../components/TradingWidget";
+import TradingWidget from "../../components/tradingWidget";
 
 const TradingWidgetContainer = (props) => {
     return <TradingWidget
